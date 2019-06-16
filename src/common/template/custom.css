@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css?family=Numans');
+
+html,body{
+
+font-family: 'Numans', sans-serif;
+
+}
+#dashboard .card {
+	margin-top:10px;
+	
+}
+.item li {
+	list-style-type:none;
+}
+@media screen and (max-width: 767px){
+	#carrinho-compras .item {
+		padding:1px;
+		
+	}
+	#carrinho-compras .item li {
+		padding:20px 5px;
+		height:48%;
+	}
+
+	#carrinho-compras .item li .btn-danger {
+		margin-left:50%;
+		transform:translateX(-50%);
+	}
+}
+.main-footer {
+	position :fixed;
+	bottom:0;
+	width:100%;
+}
+.show {
+	transition: 2s;
+	
+}
+nav a{
+	font-size:1.3em;
+	color: #fff;
+}
+
+#nav-principal{
+	height:50px;
+}
+.bg-navbar{
+	
+	background-color:#3c8dbc !important;
+}
+
+.navbar-custom-menu{
+	position:absolute;
+	right:0
+}
+.navbar-custom-menu{
+	position:absolute;
+	right:0
+}
+
+.navbar-custom-menu ul.nav li{
+	text-align:center;
+	width:60px;
+	height:50px;
+	line-height:50px;
+}
+.navbar-brand a{
+	text-decoration:none;
+	color:#fff;
+}
+.main-header .sidebar-toggle{
+		padding-top:10px !important;
+}
+.navbar-custom-menu ul.nav li:hover{
+	background-color:rgba(0,0,0,0.5);
+}
+.main-header .navbar .nav>li i {
+padding:15px;
+}
+.main-header .navbar .nav>li>a>.label {
+
+	position:absolute;
+	text-align:center;
+	font-size:9px;
+	padding: 2px 3px;
+	line-height:.9;
+}

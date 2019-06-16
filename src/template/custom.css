@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Numans');
+
+html,body{
+
+font-family: 'Numans', sans-serif;
+
+}
+.main-sidebar a {
+ color: #fff;
+ text-decoration:none;
+}
+footer {
+	position:fixed;
+	bottom:0
+}
+
+.bg-primario {
+	background-color: rgba(0,30,190,1)
+}
+.bg-secundario {
+	background-color: rgba(130,130,130,1)
+}
+
+nav.main-header {
+	box-shadow:0 1px 5px #666;
+	
+}
+#formTable div {
+	padding:0 1px 0 0;
+}
+
+#formTable div input[type=text] {
+	border-radius:0;
+}
+.main-sidebar ul li {
+	list-style-type:none;
+	padding:10px;
+}
+.main-sidebar > ul > li:hover {
+
+}
+.main-sidebar ul {
+	padding:0px;
+}
+
+.main-sidebar {
+	height:100vh;
+	padding:0;
+}
