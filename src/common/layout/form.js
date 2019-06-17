@@ -5,7 +5,15 @@ let Input = (props) => (
 	<Grid cols={props.cols}>
 		<fieldset>
 			<label className='col-12 text-center'>{props.label}</label>
-			<input type='text' name={props.name} placeholder={props.placeholder} className='form-control'/>
+			<input 
+				type='text' 
+				id={props.id} 
+				label={props.label} 
+				name={props.name} 
+				placeholder={props.placeholder}  
+				onChange={props.onChange} 
+				className='form-control'
+			/>
 		</fieldset>
 	</Grid>
 )
@@ -23,9 +31,10 @@ let Select = (props) => (
 	<Grid cols={props.cols}>
 		<fieldset>
 			<label className='col-12 text-center'>{props.label}</label>
-			<select className='form-control'>
+			<select className='form-control' onChange={props.onChange} id={props.id}>
+			<option>Selecione</option>
 				{props.options.map(option=>(
-					<option value={option.value}>{option.label}</option>
+					<option value={option.value} labelOpt={option.label}>{option.label}</option>
 				))}
 			</select>
 		</fieldset>
