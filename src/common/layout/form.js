@@ -13,6 +13,7 @@ let Input = (props) => (
 				placeholder={props.placeholder}  
 				onChange={props.onChange} 
 				className='form-control'
+				value={props.valor}
 			/>
 		</fieldset>
 	</Grid>

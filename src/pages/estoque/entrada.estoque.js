@@ -1,4 +1,6 @@
 import React from 'react'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import {Input,Form} from '../../common/layout/form'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
