@@ -6,8 +6,8 @@ import {Input,Form, Select} from '../../common/layout/form'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import Row from '../../common/layout/row'
-import {gravarProduto} from './cadastrar.produto.action'
-
+import {gravarProduto,importarProdutos} from './cadastrar.produto.action'
+import {inverterArray} from '../../common/operator/funcoes'
 
 class CadastroProduto extends React.Component{
 	constructor(props){
@@ -56,10 +56,12 @@ class CadastroProduto extends React.Component{
 			let produtos = this.props.cadastro.produtos;
 			const idProduto = (produtos.length + 1)
 			const codigo = estado.container.value+estado.subcontainer.value+estado.cor.value+idProduto
-			const descricaoProduto = estado.container.label+' '+estado.subcontainer.label+' '+estado.descricao.value+' '+estado.cor.label
-			const produto = {descricao: descricaoProduto, codigo:codigo}
-			produtos.push(produto)
-			this.props.gravarProduto(produtos)
+			const descricaoCompleta = estado.container.label+' '+estado.subcontainer.label+' '+estado.descricao.value+' '+estado.cor.label
+			const container = estado.container.value;
+			const subcontainer = estado.subcontainer.value;
+			const cor = estado.cor.value;
+			const produto = {descricaoCompleta, codigo:codigo,container,subcontainer,desc:idProduto,cor}
+			this.props.gravarProduto(produto)
 			this.ResetarSelects()
 			this.setState(this.limparState())
 
@@ -75,8 +77,14 @@ class CadastroProduto extends React.Component{
 			campo.selectedIndex = 0;
 		})
 	}
+	componentDidMount(){
+		
+		this.props.importarProdutos()
+		
+	}
 	render(){
 		const qtdProd = this.props.cadastro.produtos.length
+		const produtos = this.props.cadastro.produtos || []
 		return (
 			<Page cols='11' title='Cadastrar produto'>
 			<Row>
@@ -130,10 +138,10 @@ class CadastroProduto extends React.Component{
 						</thead>
 						<tbody>
 						{
-							this.props.cadastro.produtos.map(produto=>(
-								<tr>
+							produtos.map((produto,key)=>(
+								<tr key={key} indice={key}>
 									<td>{produto.codigo}</td>
-									<td>{produto.descricao}</td>
+									<td>{produto.descricaoCompleta}</td>
 								</tr>
 							)
 							
@@ -151,5 +159,5 @@ class CadastroProduto extends React.Component{
 }
 
 const mapStateToProps = state => ({cadastro: state.cadastroProduto})
-const  mapDispatchToProps = dispatch => bindActionCreators({gravarProduto},dispatch)
+const  mapDispatchToProps = dispatch => bindActionCreators({gravarProduto,importarProdutos},dispatch)
 export default connect(mapStateToProps,mapDispatchToProps)(CadastroProduto)

@@ -5,6 +5,8 @@ export default function(state = INITIAL_STATE, action){
 	switch(action.type){
 		case 'SAVE_PRODUCT':
 			return {...state, produtos: action.payload}
+		case 'IMPORT_PRODUCTS':
+			return {...state, produtos: action.payload}
 		default:
 		return state
 	}
