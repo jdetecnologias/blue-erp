@@ -14,6 +14,7 @@ let Input = (props) => (
 				onChange={props.onChange} 
 				className='form-control'
 				value={props.valor}
+				disabled={props.disabled?props.disabled:''}
 			/>
 		</fieldset>
 	</Grid>

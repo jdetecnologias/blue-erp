@@ -11,4 +11,18 @@ function inverterArray(array){
 	
 }
 
-export {inverterArray}
+function  optionProdutos(array){
+	let arr = []
+	
+	array.map(item=>{
+		arr.push({value:item._id, label:item.descricaoCompleta})
+	})
+	return arr
+}
+
+function resetarCamposSelect(campos){
+	campos.map(campo=>{
+		campo.selectedIndex = 0
+	})
+}
+export {inverterArray,optionProdutos,resetarCamposSelect}

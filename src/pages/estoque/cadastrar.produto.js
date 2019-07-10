@@ -7,7 +7,7 @@ import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import Row from '../../common/layout/row'
 import {gravarProduto,importarProdutos} from './cadastrar.produto.action'
-import {inverterArray} from '../../common/operator/funcoes'
+import {inverterArray,resetarCamposSelect} from '../../common/operator/funcoes'
 
 class CadastroProduto extends React.Component{
 	constructor(props){
@@ -73,9 +73,7 @@ class CadastroProduto extends React.Component{
 	ResetarSelects(){
 		const campos = this.state.campos;
 		
-		campos.forEach(campo=>{
-			campo.selectedIndex = 0;
-		})
+		resetarCamposSelect(campos)
 	}
 	componentDidMount(){
 		
