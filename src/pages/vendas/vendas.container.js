@@ -3,20 +3,23 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {importarProdutos} from '../estoque/cadastrar.produto.action'
 
+import{gravarVenda} from './vendas.action'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import Row from '../../common/layout/row'
 import {Input, Form,Select} from '../../common/layout/form'
 import {optionProdutos,resetarCamposSelect} from '../../common/operator/funcoes'
 
-const INITIAL_ITEM = ()=>({produto:'',descProduto:'', qtd:'',valorUnitario:''})
+const INITIAL_ITEM = ()=>({produto:0,descProduto:'', qtd:0,valorUnitario:0})
+const INITIAL_STATE = ()=>({nomeCliente:'',item:INITIAL_ITEM(),itens:[],selectCampos:[],valorTotalPedido: 0,status:'PENDENTE'})
 
 class FormVendas extends React.Component{
 	constructor(props){
 		super(props)
-		this.state = {nomeCliente:'',item:INITIAL_ITEM(),itens:[],selectCampos:[],valorTotalPedido: 0}
+		this.state = INITIAL_STATE()
 		this.preencheCampos = this.preencheCampos.bind(this)
 		this.adicionarItem = this.adicionarItem.bind(this)
+		this.finalizarVenda = this.finalizarVenda.bind(this)
 	}
 	preencheCampos(e){
 		const campo = e.target.getAttribute('id')
@@ -28,10 +31,10 @@ class FormVendas extends React.Component{
 				state.nomeCliente = e.target.value
 			break;
 			case 'qtd':
-				item.qtd = e.target.value
+				item.qtd = parseFloat(e.target.value)
 			break;
 			case 'vlunitario':
-				item.valorUnitario = e.target.value
+				item.valorUnitario = parseFloat(e.target.value)
 			break;
 			case 'produto':
 				item.produto = e.target.value
@@ -62,6 +65,12 @@ class FormVendas extends React.Component{
 		state.valorTotalPedido = valorTotalPedido
 		this.setState( state)
 		resetarCamposSelect(this.state.campos)
+	}
+	finalizarVenda(){
+		const state = this.state;
+		let venda =  {nomeCliente:state.nomeCliente,itens:state.itens,valorTotalPedido:state.valorTotalPedido,status:state.status}
+		gravarVenda(venda)
+		this.setState(INITIAL_STATE())
 	}
 	render(){
 		return(
@@ -96,6 +105,7 @@ class FormVendas extends React.Component{
 							}
 							<tr><td colspan='3'>Total do Pedido</td><td >R$ {(this.state.valorTotalPedido).toFixed(2)}</td></tr>
 						</table>
+						<button className='btn btn-primary btn-sm' onClick={this.finalizarVenda}>Finalizar Venda</button>
 					</Grid>
 				</Row>
 			</Page>
@@ -104,5 +114,5 @@ class FormVendas extends React.Component{
 }
 
 const mapStateToProps = state =>({cadastroProduto: state.cadastroProduto})
-const mapDispatchToProps = dispatch => bindActionCreators({importarProdutos},dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({importarProdutos,gravarVenda},dispatch)
 export default connect(mapStateToProps,mapDispatchToProps)(FormVendas)
