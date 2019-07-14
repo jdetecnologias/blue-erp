@@ -47,7 +47,6 @@ class FormVendas extends React.Component{
 		}
 		state.item =item
 		this.setState({...this.state,item: state.item})
-			console.log(state)
 	}
 	componentDidMount(){
 		this.props.importarProdutos()
@@ -59,7 +58,6 @@ class FormVendas extends React.Component{
 		itens.push(state.item)
 		state.itens = itens
 		let valorTotalPedido = state.valorTotalPedido
-		console.log(state.item.qtd*state.item.valorUnitario)
 		valorTotalPedido += parseFloat(state.item.qtd)*parseFloat(state.item.valorUnitario)
 		state.item = INITIAL_ITEM()
 		state.valorTotalPedido = valorTotalPedido

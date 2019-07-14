@@ -31,7 +31,6 @@ class EntradaEstoque extends React.Component{
 		this.props.gravarEstoque(this.state)
 	}
 	render(){
-		console.log(this.props.cadastro)
 		return (
 			<Page cols='11' title='Entrada mercadoria no estoque'> 
 					<Grid cols='12 10 8 6 4' className='offset-sm-1 offset-md-2 offset-lg-3 offset-xl-4'>
