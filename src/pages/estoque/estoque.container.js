@@ -18,10 +18,9 @@ class Estoque extends React.Component{
 		this.props.importarEstoque()	
 	}
 	render(){
+		console.log('status',this.props.estoque.status)
 		const estoque = JoinArray(this.props.estoque.estoque,'codigo',this.props.produtos,'_id')
 		
-		console.log(estoque)
-	
 		return (
 			<Page cols='11' title='Visualizar estoque'>
 				<Grid cols='12 10 8'  className='offset-sm-1 offset-md-2'>
