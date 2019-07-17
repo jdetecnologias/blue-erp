@@ -25,4 +25,19 @@ function resetarCamposSelect(campos){
 		campo.selectedIndex = 0
 	})
 }
-export {inverterArray,optionProdutos,resetarCamposSelect}
+
+function JoinArray(ATprincipal,AcampoToJoinPrincipal, AtSecundaria,AcampoToJoinSecundaria){
+let arr = []
+	ATprincipal.forEach(item=>{
+		AtSecundaria.forEach(it=> {
+			if(item[AcampoToJoinPrincipal] === it[AcampoToJoinSecundaria]){
+				item.join = it
+			}
+		})
+		arr.push(item)
+	})
+	return arr
+
+}
+
+export {inverterArray,optionProdutos,resetarCamposSelect, JoinArray}

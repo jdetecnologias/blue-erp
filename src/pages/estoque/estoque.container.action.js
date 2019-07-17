@@ -1,11 +1,17 @@
 import axios from 'axios'
-const BASE_URL = 'http://18.217.144.66:3003'
+import {importarProdutos} from './cadastrar.produto.action'
 
+const BASE_URL = 'http://18.217.144.66:3003'
 
 export  function importarEstoque(){
 	return (dispatch, getState)=>{
-	axios.get(`${BASE_URL}/estoque`,{headers:{'Content-Type': 'application/json'}})
-	.then(resp=>dispatch({type:'IMPORT_ESTOQUE',payload: resp.data}))
+	axios.get(`${BASE_URL}/estoque`)
+	.then(resp=>dispatch([{type:'IMPORT_ESTOQUE',payload: resp.data},importarProdutos()]))
 	}
+}
+
+export  function setEstoque(estoque){
+	return ({type:'IMPORT_ESTOQUE',payload: estoque})
+
 }
 
