@@ -10,7 +10,7 @@ import Row from '../../common/layout/row'
 import {Input, Form,Select} from '../../common/layout/form'
 import {optionProdutos,resetarCamposSelect} from '../../common/operator/funcoes'
 
-const INITIAL_ITEM = ()=>({produto:0,descProduto:'', qtd:0,valorUnitario:0})
+const INITIAL_ITEM = ()=>({produto:'',descProduto:'', qtd:'',valorUnitario:''})
 const INITIAL_STATE = ()=>({nomeCliente:'',item:INITIAL_ITEM(),itens:[],selectCampos:[],valorTotalPedido: 0,status:'PENDENTE'})
 
 class FormVendas extends React.Component{
@@ -21,6 +21,7 @@ class FormVendas extends React.Component{
 		this.adicionarItem = this.adicionarItem.bind(this)
 		this.finalizarVenda = this.finalizarVenda.bind(this)
 	}
+
 	preencheCampos(e){
 		const campo = e.target.getAttribute('id')
 		let state = this.state
@@ -31,10 +32,10 @@ class FormVendas extends React.Component{
 				state.nomeCliente = e.target.value
 			break;
 			case 'qtd':
-				item.qtd = parseFloat(e.target.value)
+				 if(!isNaN(e.target.value)){item.qtd = (e.target.value)}
 			break;
 			case 'vlunitario':
-				item.valorUnitario = parseFloat(e.target.value)
+				if( !isNaN(e.target.value.replace(',','.'))){item.valorUnitario = e.target.value.replace(',','.')}
 			break;
 			case 'produto':
 				item.produto = e.target.value
@@ -58,9 +59,14 @@ class FormVendas extends React.Component{
 	}
 	adicionarItem (){
 		let state = this.state
-
+		const objetoItem = {
+							produto:state.item.produto
+							,descProduto:state.item.descProduto
+							, qtd:parseFloat(state.item.qtd)
+							,valorUnitario:parseFloat(state.item.valorUnitario)
+						}
 		let itens = state.itens
-		itens.push(state.item)
+		itens.push(objetoItem)
 		state.itens = itens
 		let valorTotalPedido = state.valorTotalPedido
 		valorTotalPedido += parseFloat(state.item.qtd)*parseFloat(state.item.valorUnitario)
