@@ -43,6 +43,11 @@ class FormVendas extends React.Component{
 				state.campos = campos
 				item.descProduto =textoProduto
 			break;
+			case 'statusPedido':
+				state.status = e.target.value
+				campos.push(e.target)
+				state.campos = campos
+			break;
 		
 		}
 		state.item =item
@@ -85,7 +90,8 @@ class FormVendas extends React.Component{
 						<button className='btn btn-primary btn-sm' onClick={this.adicionarItem}>Adicionar Produto</button>
 					</Grid>
 					<Grid cols='12 6'>
-						<h3 className='text-center'>Dados do pedido</h3>
+						<h3 className='text-center'>Dados do pedido </h3>
+
 						<table className='table'>
 							<tr><td>Nome do cliente:</td><td colspan='3'>{this.state.nomeCliente}</td> </tr>
 							<tr><td colspan='4' className='text-center'>Itens</td> </tr>
@@ -102,8 +108,22 @@ class FormVendas extends React.Component{
 								
 							}
 							<tr><td colspan='3'>Total do Pedido</td><td >R$ {(this.state.valorTotalPedido).toFixed(2)}</td></tr>
+							<tr><td colspan='4'>						
+								<Select   
+									label='Status do pedido'
+									cols='12'
+									id='statusPedido' 
+									onChange={this.preencheCampos} 
+									options={[{value:'PENDENTE',label:'Pendente'},{value:'PAGO',label:'Pago'}]} 
+								/>
+							</td></tr>
 						</table>
+						<Grid cols='12'>
+
+						</Grid>
+						<Grid cols='12'>
 						<button className='btn btn-primary btn-sm' onClick={this.finalizarVenda}>Finalizar Venda</button>
+						</Grid>
 					</Grid>
 				</Row>
 			</Page>
