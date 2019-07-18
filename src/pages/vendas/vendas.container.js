@@ -21,7 +21,29 @@ class FormVendas extends React.Component{
 		this.adicionarItem = this.adicionarItem.bind(this)
 		this.finalizarVenda = this.finalizarVenda.bind(this)
 	}
-
+	validarItem(objeto){
+		if(objeto.produto =='' || objeto.descProduto == '' || objeto.qtd == '' || objeto.valorUnitario == ''){
+				alert('Há campos vazios no formulário de venda, favor verificar')
+			return false;
+		}
+		else {
+			return true
+		}
+	}
+	validarItens(state){
+		if(state.nomeCliente == '' || state.status == '' || state.itens.length <=0){
+			alert('Há informações faltantes no formulário de venda, favor verificar')
+			return false
+		}
+		else{
+			state.itens.map(item=>{
+				if(!this.validarItem(item)){
+					return false;
+				}
+			})
+			return true
+		}
+	}
 	preencheCampos(e){
 		const campo = e.target.getAttribute('id')
 		let state = this.state
@@ -58,7 +80,9 @@ class FormVendas extends React.Component{
 		this.props.importarProdutos()
 	}
 	adicionarItem (){
+		
 		let state = this.state
+		if(this.validarItem(state.item)){
 		const objetoItem = {
 							produto:state.item.produto
 							,descProduto:state.item.descProduto
@@ -74,12 +98,17 @@ class FormVendas extends React.Component{
 		state.valorTotalPedido = valorTotalPedido
 		this.setState( state)
 		resetarCamposSelect(this.state.campos)
+		}
 	}
 	finalizarVenda(){
 		const state = this.state;
+		if(this.validarItens(state)){
 		let venda =  {nomeCliente:state.nomeCliente,itens:state.itens,valorTotalPedido:state.valorTotalPedido,status:state.status}
 		gravarVenda(venda)
 		this.setState(INITIAL_STATE())
+		}else{
+			
+		}
 	}
 	render(){
 		return(
