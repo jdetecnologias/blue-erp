@@ -35,7 +35,7 @@ const options = props.options ? props.options:[]
 		<Grid cols={props.cols}>
 			<fieldset>
 				<label className='col-12 text-center'>{props.label}</label>
-				<select className='form-control' onChange={props.onChange} id={props.id}>
+				<select className='form-control' onChange={props.onChange} id={props.id} value={props.valor}>
 				<option>Selecione</option>
 					{options.map((option,key)=>(
 						<option key={key} value={option.value} labelOpt={option.label}>{option.label}</option>
