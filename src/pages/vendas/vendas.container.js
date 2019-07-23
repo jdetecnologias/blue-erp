@@ -12,7 +12,7 @@ import {Input, Form,Select} from '../../common/layout/form'
 import {optionProdutos,resetarCamposSelect} from '../../common/operator/funcoes'
 
 const INITIAL_ITEM = ()=>({produto:'',descProduto:'', qtd:'',valorUnitario:''})
-const INITIAL_STATE = ()=>({nomeCliente:'',indice:'',item:INITIAL_ITEM(),itens:[],selectCampos:[],valorTotalPedido: 0,status:'PENDENTE'})
+const INITIAL_STATE = ()=>({nomeCliente:'',indice:'',item:INITIAL_ITEM(),itens:[],selectCampos:[],status:'PENDENTE'})
 
 class FormVendas extends React.Component{
 	constructor(props){
@@ -80,7 +80,7 @@ class FormVendas extends React.Component{
 				item.descProduto =textoProduto
 			break;
 			case 'statusPedido':
-				state.status = e.target.value
+				state.status = e.target.value === 'Selecione'?'PENDENTE': state.status = e.target.value
 				campos.push(e.target)
 				state.campos = campos
 			break;
@@ -110,9 +110,7 @@ class FormVendas extends React.Component{
 		itens.push(objetoItem)
 		state.itens = itens
 		
-		const valorTotalPedido = this.somarValorTotal()
 		state.item = INITIAL_ITEM()
-		state.valorTotalPedido = valorTotalPedido
 		this.setState( state)
 		resetarCamposSelect(this.state.campos)
 		}
@@ -133,8 +131,7 @@ class FormVendas extends React.Component{
 			let state = this.state
 			let itens = state.itens
 			itens.splice(indice,1)
-			const valorTotalPedido = this.somarValorTotal()
-			this.setState({...this.state, itens, valorTotalPedido})
+			this.setState({...this.state, itens})
 		}
 	}
 	
@@ -193,12 +190,13 @@ class FormVendas extends React.Component{
 								})
 								
 							}
-							<tr><td colspan='4'>Total do Pedido</td><td colspan='2'>R$ {(this.state.valorTotalPedido).toFixed(2)}</td></tr>
+							<tr><td colspan='4'>Total do Pedido</td><td colspan='2'>R$ {(this.somarValorTotal()).toFixed(2)}</td></tr>
 							<tr><td colspan='6'>						
 								<Select   
 									label='Status do pedido'
 									cols='12'
 									id='statusPedido' 
+									valor={this.state.status}
 									onChange={this.preencheCampos} 
 									options={[{value:'PENDENTE',label:'Pendente'},{value:'PAGO',label:'Pago'}]} 
 								/>
