@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {importarProdutos} from '../estoque/cadastrar.produto.action'
 const BASE_URL = 'http://18.217.144.66:3003'
 
 
@@ -11,3 +12,15 @@ console.log(Venda)
 		})
 
 }
+
+export  function importarVendas(){
+
+	return (dispatch, getState)=>{
+		
+	const request = axios.get(`${BASE_URL}/vendas`)
+	.then(res=>dispatch([{type: 'IMPORT_VENDAS', payload: res.data},importarProdutos()]))
+
+	}
+
+}
+
