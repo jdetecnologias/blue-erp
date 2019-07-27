@@ -24,3 +24,24 @@ export  function importarVendas(){
 
 }
 
+export function atualizarStatus(tipo,id){
+	let url,resposta;
+	
+	return (dispatch, getState)=>{
+		switch(tipo){
+			case 'PAGO':
+				resposta = window.confirm('Deseja realmente FINALIZAR a venda?')
+				resposta?url = `${BASE_URL}/finalizarVenda`:url=false
+			break
+			case 'CANCELADA':
+				resposta = window.confirm('Deseja realmente CANCELAR a venda?')
+				resposta?url = `${BASE_URL}/cancelarVenda`:url=false
+			break
+		}
+		if(url){
+			axios.put(url,{_id:id})
+			.then(res=>dispatch([importarVendas()]))
+		}
+
+	}
+}

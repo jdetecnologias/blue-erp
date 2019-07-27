@@ -1,19 +1,20 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {importarVendas} from './vendas.action'
+import {importarVendas,atualizarStatus} from './vendas.action'
 import {JoinArray} from '../../common/operator/funcoes'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import Row from '../../common/layout/row'
 import If from '../../common/operator/if'
-const bgPattern = 'bg-primary text-white'
+const bgPattern = 'bg-info text-white'
 
 class ConsultarEstoque extends React.Component{
 	constructor(props){
 		super(props)
-		this.state = {vendaSelecionada:{nomeCliente:'', valorTotalPedido:'', itens:[], status:''},indiceItemSelecionado:-1}
+		this.state = {vendaSelecionada:{_id:'',nomeCliente:'', valorTotalPedido:'', itens:[], status:''},indiceItemSelecionado:-1}
 		this.selecionarVenda = this.selecionarVenda.bind(this)
+		this.atualizarStatus = this.atualizarStatus.bind(this)
 	}
 	componentDidMount(){
 		this.props.importarVendas()
@@ -26,6 +27,11 @@ class ConsultarEstoque extends React.Component{
 		vendaSelecionada.itens = itens
 		
 		this.setState({...this.state,vendaSelecionada,indiceItemSelecionado:indice})
+	}
+	atualizarStatus(tipo){
+			let venda = this.state.vendaSelecionada
+			const id = venda._id
+			this.props.atualizarStatus(tipo,id)
 	}
 	render(){
 
@@ -48,8 +54,25 @@ class ConsultarEstoque extends React.Component{
 								</tbody>
 							</table>
 						</Grid>
-						<Grid cols='7' className={bgPattern}>
-							<table className={'table table-sm '+bgPattern}>
+						<Grid cols='7' >
+						<If test={this.state.vendaSelecionada.status != ''}>
+						<Grid cols='12' className=''>
+							<If test={this.state.vendaSelecionada.status=='PENDENTE'}>
+								<button type='button' onClick={()=> this.atualizarStatus('PAGO')} className='btn btn-success'>
+									Finalizar venda
+								</button>
+							</If>
+							<If test={this.state.vendaSelecionada.status == 'PENDENTE'}>
+								<button type='button'  className='btn btn-primary '>
+									Editar venda
+								</button>
+							</If>
+								<button type='button' onClick={()=> this.atualizarStatus('CANCELADA')} className='btn btn-danger '>
+									Cancelar venda
+								</button>							
+							</Grid>
+						</If>
+							<table className='table table-sm '>
 								<thead>
 									<tr><td>Cliente</td><td colspan='3'>{this.state.vendaSelecionada.nomeCliente}</td></tr>
 									<tr>
@@ -58,6 +81,8 @@ class ConsultarEstoque extends React.Component{
 										<td>Status</td>
 										<td>{this.state.vendaSelecionada.status}</td></tr>
 								</thead>
+								</table>
+								<table className='table table-sm '>
 								<tbody>
 									<tr className='text-center'><th>Produto</th><th>Qtd</th><th>V. Unit</th><th>V. Total</th></tr>
 									{
@@ -79,5 +104,5 @@ class ConsultarEstoque extends React.Component{
 	}
 }
 const mapStateToProps = state=> ({vendas: state.vendas, produtos:state.cadastroProduto.produtos})
-const mapDispatchToProps = dispatch=> bindActionCreators({importarVendas},dispatch)
+const mapDispatchToProps = dispatch=> bindActionCreators({importarVendas,atualizarStatus},dispatch)
 export default connect(mapStateToProps,mapDispatchToProps)(ConsultarEstoque)

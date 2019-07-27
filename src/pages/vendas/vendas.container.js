@@ -118,7 +118,7 @@ class FormVendas extends React.Component{
 	finalizarVenda(){
 		const state = this.state;
 		if(this.validarItens(state)){
-		let venda =  {nomeCliente:state.nomeCliente,itens:state.itens,valorTotalPedido:state.valorTotalPedido,status:state.status}
+		let venda =  {nomeCliente:state.nomeCliente,itens:state.itens,valorTotalPedido:this.somarValorTotal(),status:state.status}
 		gravarVenda(venda)
 		this.setState(INITIAL_STATE())
 		}else{
