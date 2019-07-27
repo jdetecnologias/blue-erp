@@ -67,9 +67,11 @@ class ConsultarEstoque extends React.Component{
 									Editar venda
 								</button>
 							</If>
+							<If test={this.state.vendaSelecionada.status !== 'CANCELADA'}>
 								<button type='button' onClick={()=> this.atualizarStatus('CANCELADA')} className='btn btn-danger '>
 									Cancelar venda
-								</button>							
+								</button>	
+							</If>								
 							</Grid>
 						</If>
 							<table className='table table-sm '>
