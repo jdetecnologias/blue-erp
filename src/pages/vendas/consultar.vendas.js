@@ -31,7 +31,9 @@ class ConsultarEstoque extends React.Component{
 	atualizarStatus(tipo){
 			let venda = this.state.vendaSelecionada
 			const id = venda._id
+			venda.status = tipo
 			this.props.atualizarStatus(tipo,id)
+			this.setState({...this.state, vendaSelecionada:venda})
 	}
 	render(){
 
@@ -67,7 +69,7 @@ class ConsultarEstoque extends React.Component{
 									Editar venda
 								</button>
 							</If>
-							<If test={this.state.vendaSelecionada.status !== 'CANCELADA'}>
+							<If test={this.state.vendaSelecionada.status == 'PENDENTE'}>
 								<button type='button' onClick={()=> this.atualizarStatus('CANCELADA')} className='btn btn-danger '>
 									Cancelar venda
 								</button>	
