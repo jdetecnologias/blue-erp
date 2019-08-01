@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {importarFinanceiro} from './financeiro.container.action'
-import {JoinArray} from '../../common/operator/funcoes'
+import {JoinArray,ConvertDate} from '../../common/operator/funcoes'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import Row from '../../common/layout/row'
@@ -48,12 +48,12 @@ class Financeiro extends React.Component{
 					<Row>
 						<Grid cols='6'>
 							<table className='table'>
-								<thead><tr><th>Documento</th><th>Valor Total</th><th>Status</th></tr></thead>
+								<thead><tr><th>Dt. Criação</th><th>Documento</th><th>Valor Total</th><th>Status</th></tr></thead>
 								<tbody>
 									{
 										finan.map((fi)=>{
 
-											return <tr><td>{fi._id}</td><td>{fi.valorTotalPedido}</td><td>{fi.status}</td></tr>
+											return <tr><td>{ConvertDate(fi.createdAt)}</td><td>{fi._id}</td><td>{fi.valorTotalPedido}</td><td>{fi.status}</td></tr>
 										})										
 										
 									}

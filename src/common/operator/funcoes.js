@@ -40,4 +40,10 @@ let arr = []
 
 }
 
-export {inverterArray,optionProdutos,resetarCamposSelect, JoinArray}
+function ConvertDate(date){
+	const Explode = date.split('T')
+	date = Explode[0].split('-')
+	
+	return date[2]+'/'+date[1]+'/'+date[0]
+}
+export {inverterArray,optionProdutos,resetarCamposSelect, JoinArray,ConvertDate}
