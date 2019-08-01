@@ -9,6 +9,8 @@ export default props => (
 			<li><a href='/produto'>Produto</a></li>	
 			<li><a href='/entrada'>Entrada</a></li>	
 			<li><a href='/venda'>Venda</a></li>
+			<li><a href='/cvenda'>Consultar Venda</a></li>
+			<li><a href='/financeiro'>Financeiro</a></li>
 		</ul>
 	</aside>
 )
