@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {importarProdutos} from '../estoque/cadastrar.produto.action'
 
-import{gravarVenda} from './vendas.action'
+import{gravarVenda,EditarVenda} from './vendas.action'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import Row from '../../common/layout/row'
@@ -15,9 +15,9 @@ const INITIAL_ITEM = ()=>({produto:'',descProduto:'', qtd:'',valorUnitario:''})
 const INITIAL_STATE = ()=>({nomeCliente:'',indice:'',item:INITIAL_ITEM(),itens:[],selectCampos:[],status:'PENDENTE'})
 
 class FormVendas extends React.Component{
+	
 	constructor(props){
 		super(props)
-		this.state = INITIAL_STATE()
 		this.preencheCampos = this.preencheCampos.bind(this)
 		this.adicionarItem = this.adicionarItem.bind(this)
 		this.finalizarVenda = this.finalizarVenda.bind(this)
@@ -25,6 +25,20 @@ class FormVendas extends React.Component{
 		this.somarValorTotal = this.somarValorTotal.bind(this)
 		this.editarItem = this.editarItem.bind(this)
 		this.atualizarItem = this.atualizarItem.bind(this)
+		this.preencherStatus = this.preencherStatus.bind(this)
+		this.state = this.preencherStatus()
+	}
+	preencherStatus(){
+		const state = this.props.state || {}
+		
+		let INITIAL_ITEM = ()=>({produto:'',descProduto:'', qtd:'',valorUnitario:''})
+
+		const INITIAL_STATE = ()=>({_id:'',nomeCliente:'',indice:'',item:INITIAL_ITEM(),itens:[],selectCampos:[],status:'PENDENTE'})
+		let initialState = INITIAL_STATE()		
+		Object.keys(initialState).forEach(key=>{
+			initialState[key] = state[key]?state[key]:initialState[key]
+		})
+		return initialState
 	}
 	validarItem(objeto){
 		if(objeto.produto =='' || objeto.descProduto == '' || objeto.qtd == '' || objeto.valorUnitario == ''){
@@ -92,7 +106,7 @@ class FormVendas extends React.Component{
 	componentDidMount(){
 		this.props.importarProdutos()
 	}
-	componentWillMounr(){
+	componentWillMount(){
 		this.somarValorTotal()
 	}
 	
@@ -117,10 +131,15 @@ class FormVendas extends React.Component{
 	}
 	finalizarVenda(){
 		const state = this.state;
+				this.props.EditarVenda(!this.props.editarVenda)
 		if(this.validarItens(state)){
 		let venda =  {nomeCliente:state.nomeCliente,itens:state.itens,valorTotalPedido:this.somarValorTotal(),status:state.status}
+		if(state._id){
+			venda._id = state._id
+		}
 		gravarVenda(venda)
-		this.setState(INITIAL_STATE())
+		this.setState(this.preencherStatus())
+
 		}else{
 			
 		}
@@ -152,6 +171,7 @@ class FormVendas extends React.Component{
 		
 	}
 	render(){
+				console.log('state', this.state)
 		return(
 			<Page cols='11' title='Vendas'>
 				<Row>
@@ -215,6 +235,6 @@ class FormVendas extends React.Component{
 	}
 }
 
-const mapStateToProps = state =>({cadastroProduto: state.cadastroProduto})
-const mapDispatchToProps = dispatch => bindActionCreators({importarProdutos,gravarVenda},dispatch)
+const mapStateToProps = state =>({cadastroProduto: state.cadastroProduto,editarVenda: state.vendas.editarVenda})
+const mapDispatchToProps = dispatch => bindActionCreators({importarProdutos,gravarVenda,EditarVenda},dispatch)
 export default connect(mapStateToProps,mapDispatchToProps)(FormVendas)

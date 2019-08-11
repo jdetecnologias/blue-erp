@@ -4,12 +4,16 @@ const BASE_URL = 'http://18.217.144.66:3003'
 
 
 export  function gravarVenda(Venda){
-
-console.log(Venda)
-	axios.post(`${BASE_URL}/vendas`,Venda,{headers:{'Content-Type': 'application/json'}}).then(resp=>{
-		console.log(resp)
-		
+	if(Venda._id){
+		axios.post(`${BASE_URL}/atualizarVenda`,Venda,{headers:{'Content-Type': 'application/json'}}).then(resp=>{
+			console.log(resp)
 		})
+	}
+	else{
+		axios.post(`${BASE_URL}/vendas`,Venda,{headers:{'Content-Type': 'application/json'}}).then(resp=>{
+			console.log(resp)
+		})	
+	}
 
 }
 
@@ -44,4 +48,8 @@ export function atualizarStatus(tipo,id){
 		}
 
 	}
+}
+
+export function EditarVenda(Tboolean){
+	return {type: 'ALLOW_EDIT_VENDA', payload:Tboolean}
 }

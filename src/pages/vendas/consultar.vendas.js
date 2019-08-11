@@ -1,20 +1,22 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {importarVendas,atualizarStatus} from './vendas.action'
+import {importarVendas,atualizarStatus,EditarVenda} from './vendas.action'
 import {JoinArray} from '../../common/operator/funcoes'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import Row from '../../common/layout/row'
 import If from '../../common/operator/if'
+import FormVenda from './vendas.container'
 const bgPattern = 'bg-info text-white'
 
 class ConsultarEstoque extends React.Component{
 	constructor(props){
 		super(props)
-		this.state = {vendaSelecionada:{_id:'',nomeCliente:'', valorTotalPedido:'', itens:[], status:''},indiceItemSelecionado:-1}
+		this.state = {vendaSelecionada:{_id:'',nomeCliente:'', valorTotalPedido:'', itens:[], status:''},indiceItemSelecionado:-1,dadosParaEditarVenda:{}}
 		this.selecionarVenda = this.selecionarVenda.bind(this)
 		this.atualizarStatus = this.atualizarStatus.bind(this)
+		this.editarVenda = this.editarVenda.bind(this)
 	}
 	componentDidMount(){
 		this.props.importarVendas()
@@ -23,7 +25,6 @@ class ConsultarEstoque extends React.Component{
 		const vendaSelecionada = this.props.vendas.vendas[indice]
 		console.log(vendaSelecionada.itens)
 		const itens = JoinArray(vendaSelecionada.itens,'produto',this.props.produtos,'_id')
-		console.log(itens)
 		vendaSelecionada.itens = itens
 		
 		this.setState({...this.state,vendaSelecionada,indiceItemSelecionado:indice})
@@ -35,78 +36,102 @@ class ConsultarEstoque extends React.Component{
 			this.props.atualizarStatus(tipo,id)
 			this.setState({...this.state, vendaSelecionada:venda})
 	}
+	editarVenda(){
+		const itens = this.state.vendaSelecionada.itens
+		let itensAux = []
+		const dadosParaEditarVenda = this.state.vendaSelecionada
+		itens.map(item=>{
+			item.descProduto = item.join.descricaoCompleta
+			delete item.join
+			itensAux.push(item)
+		})
+		console.log('itens',itens)
+		dadosParaEditarVenda.itens = itensAux
+		console.log(dadosParaEditarVenda)
+
+		debugger
+		this.setState({...this.state,dadosParaEditarVenda})
+		this.props.EditarVenda(!this.props.vendas.editarVenda)
+	}
 	render(){
 
 
 		return(
-			<Page cols='11' title='Consultar Vendas'>
-				
-				<Grid cols='12'>
-					<Row>
-						<Grid cols='5'>
-							<table className='table table-sm'>
-								<thead>
-									<tr><th>Cliente</th><th>Valor total</th></tr>
-								</thead>
-								<tbody>
-								{this.props.vendas.vendas.map((venda,key)=>{
-									
-									return <tr className={this.state.indiceItemSelecionado === key ? bgPattern:''} onClick={(e)=>this.selecionarVenda(key,e)}><td>{venda.nomeCliente}</td><td>{venda.valorTotalPedido}</td></tr>
-								})}
-								</tbody>
-							</table>
-						</Grid>
-						<Grid cols='7' >
-						<If test={this.state.vendaSelecionada.status != ''}>
-						<Grid cols='12' className=''>
-							<If test={this.state.vendaSelecionada.status=='PENDENTE'}>
-								<button type='button' onClick={()=> this.atualizarStatus('PAGO')} className='btn btn-success'>
-									Finalizar venda
-								</button>
-							</If>
-							<If test={this.state.vendaSelecionada.status == 'PENDENTE'}>
-								<button type='button'  className='btn btn-primary '>
-									Editar venda
-								</button>
-							</If>
-							<If test={this.state.vendaSelecionada.status == 'PENDENTE'}>
-								<button type='button' onClick={()=> this.atualizarStatus('CANCELADA')} className='btn btn-danger '>
-									Cancelar venda
-								</button>	
-							</If>								
-							</Grid>
-						</If>
-							<table className='table table-sm '>
-								<thead>
-									<tr><td>Cliente</td><td colspan='3'>{this.state.vendaSelecionada.nomeCliente}</td></tr>
-									<tr>
-										<td>Valor Total</td>
-										<td>{this.state.vendaSelecionada.valorTotalPedido}</td>
-										<td>Status</td>
-										<td>{this.state.vendaSelecionada.status}</td></tr>
-								</thead>
+		<Grid cols='11'>
+			<If test={!this.props.vendas.editarVenda}>
+				<Page cols='11' title='Consultar Vendas'>
+					
+					<Grid cols='12'>
+						<Row>
+							<Grid cols='5'>
+								<table className='table table-sm'>
+									<thead>
+										<tr><th>Cliente</th><th>Valor total</th></tr>
+									</thead>
+									<tbody>
+									{this.props.vendas.vendas.map((venda,key)=>{
+										
+										return <tr className={this.state.indiceItemSelecionado === key ? bgPattern:''} onClick={(e)=>this.selecionarVenda(key,e)}><td>{venda.nomeCliente}</td><td>{venda.valorTotalPedido}</td></tr>
+									})}
+									</tbody>
 								</table>
+							</Grid>
+							<Grid cols='7' >
+							<If test={this.state.vendaSelecionada.status != ''}>
+							<Grid cols='12' className=''>
+								<If test={this.state.vendaSelecionada.status=='PENDENTE'}>
+									<button type='button' onClick={()=> this.atualizarStatus('PAGO')} className='btn btn-success'>
+										Finalizar venda
+									</button>
+								</If>
+								<If test={false/*this.state.vendaSelecionada.status == 'PENDENTE'*/}>
+									<button onClick={this.editarVenda} type='button'  className='btn btn-primary '>
+										Editar venda
+									</button>
+								</If>
+								<If test={this.state.vendaSelecionada.status == 'PENDENTE'}>
+									<button type='button' onClick={()=> this.atualizarStatus('CANCELADA')} className='btn btn-danger '>
+										Cancelar venda
+									</button>	
+								</If>								
+								</Grid>
+							</If>
 								<table className='table table-sm '>
-								<tbody>
-									<tr className='text-center'><th>Produto</th><th>Qtd</th><th>V. Unit</th><th>V. Total</th></tr>
-									{
-										this.state.vendaSelecionada.itens.map((item,key)=>{
-											
-											if(item.join){
-											return <tr><td>{item.join.descricaoCompleta}</td><td>{item.qtd}</td><td>{item.valorUnitario}</td><td>{item.valorUnitario*item.qtd}</td></tr>
-											}
-										})
-									}
-								</tbody>
-							</table>						
-						</Grid>
-					</Row>
-				</Grid>
-				
-			</Page>
+									<thead>
+										<tr><td>Cliente</td><td colspan='3'>{this.state.vendaSelecionada.nomeCliente}</td></tr>
+										<tr>
+											<td>Valor Total</td>
+											<td>{this.state.vendaSelecionada.valorTotalPedido}</td>
+											<td>Status</td>
+											<td>{this.state.vendaSelecionada.status}</td></tr>
+									</thead>
+									</table>
+									<table className='table table-sm '>
+									<tbody>
+										<tr className='text-center'><th>Produto</th><th>Qtd</th><th>V. Unit</th><th>V. Total</th></tr>
+										{
+											this.state.vendaSelecionada.itens.map((item,key)=>{
+												
+												if(item.join){
+												return <tr><td>{item.join.descricaoCompleta}</td><td>{item.qtd}</td><td>{item.valorUnitario}</td><td>{item.valorUnitario*item.qtd}</td></tr>
+												}
+											})
+										}
+									</tbody>
+								</table>						
+							</Grid>
+						</Row>
+					</Grid>
+					
+				</Page>
+			</If>
+			<If test={this.props.vendas.editarVenda}>
+				<FormVenda state={this.state.dadosParaEditarVenda}/>
+			</If>
+		</Grid>
 		)	
 	}
 }
 const mapStateToProps = state=> ({vendas: state.vendas, produtos:state.cadastroProduto.produtos})
-const mapDispatchToProps = dispatch=> bindActionCreators({importarVendas,atualizarStatus},dispatch)
+const mapDispatchToProps = dispatch=> bindActionCreators({importarVendas,atualizarStatus,EditarVenda},dispatch)
 export default connect(mapStateToProps,mapDispatchToProps)(ConsultarEstoque)
