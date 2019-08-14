@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {setCookie,getCookie} from '../../utils/cookies'
-import Login from '../../login/login'
+import {setCookie,getCookie} from '../utils/cookies'
+import Login from '../../pages/login/login.container'
 import If from './if'
 
 const Autenticar =  props => (

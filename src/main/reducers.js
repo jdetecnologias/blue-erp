@@ -4,6 +4,7 @@ import CadastroProduto from '../pages/estoque/cadastrar.produto.reducer'
 import Vendas from '../pages/vendas/vendas.container.reducer'
 import Estoque from '../pages/estoque/estoque.container.reducer'
 import Financeiro from '../pages/financeiro/financeiro.container.reducer'
+import Auth from '../pages/login/login.reducer'
 
 const rootReducers = combineReducers({
 	insumos: [{insumo: 'Malha Algodão fio 24',qtd:10, unidade:'KG'}],
@@ -11,7 +12,8 @@ const rootReducers = combineReducers({
 	cadastroProduto: CadastroProduto,
 	estoque: Estoque,
 	vendas: Vendas,
-	financeiro: Financeiro
+	financeiro: Financeiro,
+	auth: Auth
 })
 
 export default rootReducers;

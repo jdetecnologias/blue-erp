@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './main/app';
+import Auth from './common/operator/autenticador'
 import  './template/dependencies.js'
 import * as serviceWorker from './serviceWorker'
 import {applyMiddleware, createStore} from 'redux'
@@ -16,7 +17,9 @@ const store = applyMiddleware(thunk,multi,promise)(createStore)(Reducers,devTool
 
 ReactDOM.render(
 				<Provider store={store}>
-					<App />
+					<Auth>
+						<App />
+					</Auth>
 				</Provider>
 , document.getElementById('root'));
 
