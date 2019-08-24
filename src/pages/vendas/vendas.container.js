@@ -193,23 +193,51 @@ class FormVendas extends React.Component{
 					<Grid cols='12 8'>
 						<h3 className='text-center'>Dados do pedido </h3>
 
-						<table className='table'>
-							<tr><td>Nome do cliente:</td><td colspan='3'>{this.state.nomeCliente}</td> </tr>
-							<tr><td colspan='4' className='text-center'>Itens</td> </tr>
-							<tr><td>Produto</td><td>Qtd</td><td>V. unit</td><td>Total</td><td>Editar</td><td>Excluir</td></tr>
+						<table className='table table-sm'>
+							<tr><td colspan='2'>Nome do cliente:</td><td colspan='3'>{this.state.nomeCliente}</td> </tr>
+						</table>
+						<table className='table table-sm'>
+							<tr className='d-block d-sm-none'><td colspan='5' className='text-center'>Itens</td> </tr>
+							<tr>
+								<td>Produto</td>
+								<td>Qtd</td>
+								<td>V. unit</td>
+								<td>Total</td>
+								<td>Ação</td>
+							</tr>
+							</table>
+							<table className='table table-sm'>
 							{
 								this.state.itens.map((item,key)=>{
 									return(<tr>
-										<td>{item.descProduto}</td>
-										<td>{item.qtd}</td>
-										<td>R$ {item.valorUnitario}</td>
-										<td>R$ {parseFloat(item.qtd*item.valorUnitario).toFixed(2)}</td>
-										<td className='text-center'><i onClick={()=> this.editarItem(key)} className="fa fa-edit"></i></td>
-										<td className='text-center'><i onClick={()=> this.excluirItem(key)} className="fa fa-trash"></i></td>
+										<td colspan='5'>
+										<tr className='d-block d-sm-none'><td colspan='4'>{item.descProduto}</td></tr>
+										<tr className='d-block d-sm-none'>
+											<td>{item.qtd}</td>
+											<td>R$ {item.valorUnitario}</td>
+											<td>R$ {parseFloat(item.qtd*item.valorUnitario).toFixed(2)}</td>
+											<td className='text-center'>
+												<button className='btn btn-success'><i onClick={()=> this.editarItem(key)} className="fa fa-edit"></i></button>
+												<button className='btn btn-danger'><i onClick={()=> this.excluirItem(key)} className="fa fa-trash"></i></button>
+											</td>
+										</tr>
+										<tr className='d-none d-sm-block'>
+											<td>{item.descProduto}</td>
+											<td>{item.qtd}</td>
+											<td>R$ {item.valorUnitario}</td>
+											<td>R$ {parseFloat(item.qtd*item.valorUnitario).toFixed(2)}</td>
+											<td className='text-center'>
+												<i onClick={()=> this.editarItem(key)} className="fa fa-edit"></i>
+												<i onClick={()=> this.excluirItem(key)} className="fa fa-trash"></i>
+											</td>
+										</tr>
+										</td>
 									</tr>)
 								})
 								
 							}
+							</table>
+							<table className='table table-sm'>
 							<tr><td colspan='4'>Total do Pedido</td><td colspan='2'>R$ {(this.somarValorTotal()).toFixed(2)}</td></tr>
 							<tr><td colspan='6'>						
 								<Select   
@@ -222,6 +250,7 @@ class FormVendas extends React.Component{
 								/>
 							</td></tr>
 						</table>
+						
 						<Grid cols='12'>
 
 						</Grid>
