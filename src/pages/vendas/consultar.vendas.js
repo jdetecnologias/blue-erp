@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {importarVendas,atualizarStatus,EditarVenda} from './vendas.action'
-import {JoinArray} from '../../common/operator/funcoes'
+import {JoinArray, controlarTamanhoTela as CTT , obterTamanhoGrid as OTG} from '../../common/operator/funcoes'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import Row from '../../common/layout/row'
@@ -13,10 +13,11 @@ const bgPattern = 'bg-info text-white'
 class ConsultarEstoque extends React.Component{
 	constructor(props){
 		super(props)
-		this.state = {vendaSelecionada:{_id:'',nomeCliente:'', valorTotalPedido:'', itens:[], status:''},indiceItemSelecionado:-1,dadosParaEditarVenda:{}}
+		this.state = {tamanhoTela:window.innerWidth,vendaSelecionada:{_id:'',nomeCliente:'', valorTotalPedido:'', itens:[], status:''},indiceItemSelecionado:-1,dadosParaEditarVenda:{}}
 		this.selecionarVenda = this.selecionarVenda.bind(this)
 		this.atualizarStatus = this.atualizarStatus.bind(this)
 		this.editarVenda = this.editarVenda.bind(this)
+		CTT(this)
 	}
 	componentDidMount(){
 		this.props.importarVendas()
@@ -55,15 +56,15 @@ class ConsultarEstoque extends React.Component{
 	}
 	render(){
 
-
+			console.log(this.state.tamanhoTela , OTG('xs'),this.state.tamanhoTela <= OTG('xs'))
 		return(
-		<Grid cols='11'>
+		<Grid cols='12 11'>
 			<If test={!this.props.vendas.editarVenda}>
 				<Page cols='11' title='Consultar Vendas'>
 					
 					<Grid cols='12'>
 						<Row>
-							<Grid cols='5'>
+							<Grid cols='12 12 5'>
 								<table className='table table-sm'>
 									<thead>
 										<tr><th>Cliente</th><th>Valor total</th></tr>
@@ -76,26 +77,26 @@ class ConsultarEstoque extends React.Component{
 									</tbody>
 								</table>
 							</Grid>
-							<Grid cols='7' >
-							<If test={this.state.vendaSelecionada.status != ''}>
-							<Grid cols='12' className=''>
-								<If test={this.state.vendaSelecionada.status=='PENDENTE'}>
-									<button type='button' onClick={()=> this.atualizarStatus('PAGO')} className='btn btn-success'>
-										Finalizar venda
-									</button>
+							<Grid cols='12 12 12 7' >
+								<If test={this.state.vendaSelecionada.status != ''}>
+									<Grid cols='12' className=''>
+										<If test={this.state.vendaSelecionada.status=='PENDENTE'}>
+											<button type='button' onClick={()=> this.atualizarStatus('PAGO')} className='btn btn-success'>
+												Finalizar
+											</button>
+										</If>
+										<If test={false/*this.state.vendaSelecionada.status == 'PENDENTE'*/}>
+											<button onClick={this.editarVenda} type='button'  className='btn btn-primary '>
+												Editar venda
+											</button>
+										</If>
+										<If test={this.state.vendaSelecionada.status == 'PENDENTE'}>
+											<button type='button' onClick={()=> this.atualizarStatus('CANCELADA')} className='btn btn-danger '>
+												Cancelar
+											</button>	
+										</If>								
+									</Grid>
 								</If>
-								<If test={false/*this.state.vendaSelecionada.status == 'PENDENTE'*/}>
-									<button onClick={this.editarVenda} type='button'  className='btn btn-primary '>
-										Editar venda
-									</button>
-								</If>
-								<If test={this.state.vendaSelecionada.status == 'PENDENTE'}>
-									<button type='button' onClick={()=> this.atualizarStatus('CANCELADA')} className='btn btn-danger '>
-										Cancelar venda
-									</button>	
-								</If>								
-								</Grid>
-							</If>
 								<table className='table table-sm '>
 									<thead>
 										<tr><td>Cliente</td><td colspan='3'>{this.state.vendaSelecionada.nomeCliente}</td></tr>
@@ -107,17 +108,44 @@ class ConsultarEstoque extends React.Component{
 									</thead>
 									</table>
 									<table className='table table-sm '>
-									<tbody>
-										<tr className='text-center'><th>Produto</th><th>Qtd</th><th>V. Unit</th><th>V. Total</th></tr>
-										{
-											this.state.vendaSelecionada.itens.map((item,key)=>{
-												
-												if(item.join){
-												return <tr><td>{item.join.descricaoCompleta}</td><td>{item.qtd}</td><td>{item.valorUnitario}</td><td>{item.valorUnitario*item.qtd}</td></tr>
-												}
-											})
-										}
-									</tbody>
+									<If test={this.state.tamanhoTela > OTG('xs')}>
+										<tbody>
+											<tr className='text-center'><th>Produto</th><th>Qtd</th><th>V. Unit</th><th>V. Total</th></tr>
+											{
+												this.state.vendaSelecionada.itens.map((item,key)=>{
+													
+													if(item.join){
+													return <tr><td>{item.join.descricaoCompleta}</td><td>{item.qtd}</td><td>{item.valorUnitario}</td><td>{item.valorUnitario*item.qtd}</td></tr>
+													}
+												})
+											}
+										</tbody>
+									</If>
+									<If test={this.state.tamanhoTela <= OTG('xs')}>
+										<tbody>
+											{
+												this.state.vendaSelecionada.itens.map((item,key)=>{
+													
+													if(item.join){
+													return (
+														<tr className={key%2 == 0 ? 'bg-secondary text-white' : 'bg-light text-dark'}>
+															<tr><td colspan='3'>{item.join.descricaoCompleta}</td></tr>
+															<tr>
+																<td>Qtd</td>
+																<td>V. Unit</td>
+																<td>V.Total</td>															
+															</tr>															
+															<tr>
+																<td>{item.qtd}</td>
+																<td>{item.valorUnitario}</td>
+																<td>{item.valorUnitario*item.qtd}</td>															
+															</tr>
+														</tr>)
+													}
+												})
+											}
+										</tbody>
+									</If>
 								</table>						
 							</Grid>
 						</Row>
