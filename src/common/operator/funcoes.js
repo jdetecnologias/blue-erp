@@ -3,12 +3,9 @@ function inverterArray(array){
 	const init = array.length - 1;
 	let arr = []
 	for(let i = init; i >=0;i--){
-		arr.push(array[i])
-		
-	}
-	
-	return arr
-	
+		arr.push(array[i])	
+	}	
+	return arr	
 }
 
 function  optionProdutos(array){
@@ -46,4 +43,15 @@ function ConvertDate(date){
 	
 	return date[2]+'/'+date[1]+'/'+date[0]
 }
-export {inverterArray,optionProdutos,resetarCamposSelect, JoinArray,ConvertDate}
+
+function obterTamanhoGrid(AtamanhoTela = 'xs'){
+	const objetoBootstrap = {xs: 575 , sm: 767 , md: 991, lg: 1199 }
+	return objetoBootstrap[AtamanhoTela]
+}
+
+function controlarTamanhoTela(_this){
+	document.body.onresize = function(){
+		_this.setState({..._this.state,tamanhoTela:window.innerWidth})
+	}
+}
+export {inverterArray,optionProdutos,resetarCamposSelect, JoinArray,ConvertDate,obterTamanhoGrid,controlarTamanhoTela}
