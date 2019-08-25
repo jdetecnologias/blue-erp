@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Numans');
 
 html,body{
-
 font-family: 'Numans', sans-serif;
-
+min-height: 100vh;
 }
+
 .main-sidebar a {
  color: #fff;
  text-decoration:none;
