@@ -9,7 +9,11 @@ font-family: 'Numans', sans-serif;
  color: #fff;
  text-decoration:none;
 }
-
+@media screen and (max-width: 575px){
+	.col-12 {
+		font-size:0.9em;
+	}
+}
 
 .bg-primario {
 	background-color: rgba(0,30,190,1)

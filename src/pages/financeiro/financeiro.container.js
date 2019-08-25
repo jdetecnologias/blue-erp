@@ -42,31 +42,31 @@ class Financeiro extends React.Component{
 		const Vstatus = this.retornarValoresTotais()
 		const finan = this.props.financeiro.financeiro
 		return(
-			<Page cols='11' title='Relatório Financeiro'>
+			<Page cols='12 11' title='Relatório Financeiro'>
 				
 				<Grid cols='12'>
 					<Row>
-						<Grid cols='6'>
-							<table className='table'>
-								<thead><tr><th>Dt. Criação</th><th>Documento</th><th>Valor Total</th><th>Status</th></tr></thead>
+						<Grid cols='12 12 12 6'>
+							<table className='table table-sm'>
+								<thead><tr><th>Data</th><th>Tipo</th><th>V.Tot</th><th>Status</th></tr></thead>
 								<tbody>
 									{
 										finan.map((fi)=>{
 
-											return <tr><td>{ConvertDate(fi.createdAt)}</td><td>{fi._id}</td><td>{fi.valorTotalPedido}</td><td>{fi.status}</td></tr>
+											return <tr><td>{ConvertDate(fi.createdAt)}</td><td>Venda</td><td>R$ {fi.valorTotalPedido}</td><td>{fi.status}</td></tr>
 										})										
 										
 									}
 								</tbody>
 							</table>
 						</Grid>
-						<Grid cols='6'>
+						<Grid cols='12 8 6 '>
 							<table className='table'>
-								<thead><tr><th>Status</th><th>Valor Total</th></tr></thead>
+								<thead><tr><th>Status</th><th>V.Tot</th></tr></thead>
 								<tbody>
 									{
 										Object.keys(Vstatus).map(chave=>{
-											return <tr><td>{chave}</td><td>{Vstatus[chave]}</td></tr>
+											return <tr><td>{chave}</td><td>R$ {Vstatus[chave]}</td></tr>
 											
 										})
 									}
