@@ -15,6 +15,12 @@ min-height: 100vh;
 	}
 }
 
+@media screen and (max-width: 575px){
+	#parent-menu{
+		font-size:1.3em;
+	}
+}
+
 .bg-primario {
 	background-color: rgba(0,30,190,1)
 }

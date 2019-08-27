@@ -4,6 +4,7 @@ import CadastroProduto from '../pages/estoque/cadastrar.produto.reducer'
 import Vendas from '../pages/vendas/vendas.container.reducer'
 import Estoque from '../pages/estoque/estoque.container.reducer'
 import Financeiro from '../pages/financeiro/financeiro.container.reducer'
+import Menu from '../template/menu.reducer'
 import Auth from '../pages/login/login.reducer'
 
 const rootReducers = combineReducers({
@@ -13,7 +14,8 @@ const rootReducers = combineReducers({
 	estoque: Estoque,
 	vendas: Vendas,
 	financeiro: Financeiro,
-	auth: Auth
+	auth: Auth,
+	menu: Menu
 })
 
 export default rootReducers;
