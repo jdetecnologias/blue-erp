@@ -193,8 +193,8 @@ class FormVendas extends React.Component{
 						</If>
 						<If test={this.state.indice !== ''}>
 							<button className='btn btn-primary btn-sm' onClick={this.atualizarItem}>Atualizar Item</button>
-							<button className='btn btn-danger btn-sm' onClick={this.cancelarEdicaoItem}>Cancelar</button>
 						</If>
+						<button className='btn btn-danger btn-sm' onClick={this.cancelarEdicaoItem}>Cancelar</button>
 					</Grid>
 					<Grid cols='12 12 12 10 8'>
 						<h3 className='text-center'>Dados do pedido </h3>
