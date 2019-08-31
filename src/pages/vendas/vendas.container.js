@@ -27,6 +27,7 @@ class FormVendas extends React.Component{
 		this.editarItem = this.editarItem.bind(this)
 		this.atualizarItem = this.atualizarItem.bind(this)
 		this.state = this.preencherStatus()
+		this.cancelarEdicaoItem = this.cancelarEdicaoItem.bind(this)
 		CTT(this)
 	}
 	preencherStatus(){
@@ -76,12 +77,12 @@ class FormVendas extends React.Component{
 		const campo = e.target.getAttribute('id')
 		let state = this.state
 		let campos = state.selectCampos
-		let item = this.state.item
+		let item = state.item
 		switch(campo){
 			case 'nomeCliente':
 				state.nomeCliente = e.target.value
 			break;
-			case 'qtd':
+			case 'qtd': 
 				 if(!isNaN(e.target.value)){item.qtd = (e.target.value)}
 			break;
 			case 'vlunitario':
@@ -101,8 +102,7 @@ class FormVendas extends React.Component{
 			break;
 		
 		}
-		state.item =item
-		this.setState({...this.state,item: state.item})
+		this.setState({...this.state,state})
 	}
 	componentDidMount(){
 		this.props.importarProdutos()
@@ -157,22 +157,26 @@ class FormVendas extends React.Component{
 	
 	editarItem(indice){
 		const state = this.state
-		const item = this.state.itens[indice]
-		this.setState({...state, item,indice})
+		const itens = [].concat(state.itens)
+		const item =  JSON.parse(JSON.stringify(itens[indice]))
+		this.setState({...this.state, item,indice})
 	}
 	
+	cancelarEdicaoItem(){
+		const item = INITIAL_ITEM()
+		const indice = ''
+		
+		this.setState({...this.state, item, indice})
+	}
 	atualizarItem(){
 		const state = this.state
 		let itens = state.itens
 		
 		itens[state.indice] = state.item
 		this.setState({...this.state, item:INITIAL_ITEM(),itens, indice:''})
-		
-		
-		
+	
 	}
 	render(){
-				console.log('state', this.state.tamanhoTela)
 		return(
 			<Page cols='11' title='Vendas'>
 				<Row>
@@ -189,6 +193,7 @@ class FormVendas extends React.Component{
 						</If>
 						<If test={this.state.indice !== ''}>
 							<button className='btn btn-primary btn-sm' onClick={this.atualizarItem}>Atualizar Item</button>
+							<button className='btn btn-danger btn-sm' onClick={this.cancelarEdicaoItem}>Cancelar</button>
 						</If>
 					</Grid>
 					<Grid cols='12 12 12 10 8'>
