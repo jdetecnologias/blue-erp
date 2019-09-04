@@ -9,15 +9,16 @@ import {Input, Form, Select} from '../../common/layout/form'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import If from '../../common/operator/if'
+import InputProdutos from '../../common/widget/autoComplete'
 		
 const INITIAL_STATE = function(){
-	return {qtdTotal:0,codigo:'',campos:[]}
+	return {qtdTotal:0,codigo:'',campos:[],descricaoCompleta:''}
 }
 class EntradaEstoque extends React.Component{
 	constructor(props){
 		super(props)
 		this.state = INITIAL_STATE()
-		this.atribuirCodigoProduto = this.atribuirCodigoProduto.bind(this)
+		this.atribuirProduto = this.atribuirProduto.bind(this)
 		this.atribuirqtd = this.atribuirqtd.bind(this)
 		this.finalizarEntrada = this.finalizarEntrada.bind(this)
 		this.retirarMensagemTopo = this.retirarMensagemTopo.bind(this) 
@@ -26,19 +27,20 @@ class EntradaEstoque extends React.Component{
 	componentDidMount(){
 		this.props.importarProdutos()
 	}
-	atribuirCodigoProduto(e){
+	atribuirProduto(e){
 		this.retirarMensagemTopo()
 		let campos = this.state.campos
-		campos.push(e.target)
-		this.setState({...this.state, codigo: e.target.value,campos})
+		const codigo = e.target.getAttribute('value')
+		const descricaoCompleta = e.target.textContent
+		this.setState({...this.state, codigo,descricaoCompleta})
 	}
 	atribuirqtd(e){
 		this.retirarMensagemTopo()
-		this.setState({...this.state, qtdTotal: e.target.value})
+		this.setState({...this.state, qtdTotal: +e.target.value})
 	}
 	finalizarEntrada(){
+		console.log("state",this.state)
 		this.props.gravarEstoque({qtdTotal:this.state.qtdTotal,codigo:this.state.codigo})
-		resetarCamposSelect(this.state.campos)
 		this.setState(INITIAL_STATE())
 
 		
@@ -67,7 +69,11 @@ class EntradaEstoque extends React.Component{
 				</If>
 					<Grid cols='12 10 8 6 4' className='offset-sm-1 offset-md-2 offset-lg-3 offset-xl-4'>
 						<Form cols='12'>
-						<Select cols='12'  label='Produto' options={optionProdutos(this.props.cadastro.produtos)} onChange={this.atribuirCodigoProduto}/>
+						<InputProdutos text={this.state.descricaoCompleta} label='Produto' onClickItem={this.atribuirProduto} pArrayList={this.props.cadastro.produtos} field='descricaoCompleta' fieldValue='_id' minLength={2}/>
+						<Grid cols='12' className='bg-primary text-white my-3 text-center'>
+							<h5>Produto Selectionado</h5>
+							<p>{this.state.descricaoCompleta===''? 'Nenhum': this.state.descricaoCompleta}</p>
+						</Grid>
 						<Input cols='6 4' valor={this.state.qtdTotal} placeholder='Qtd.'    label='Qtd' onChange={this.atribuirqtd}/>
 					</Form>
 					<button className='btn btn-primary btn-sm' onClick={this.finalizarEntrada}>Registrar mercadoria</button>
