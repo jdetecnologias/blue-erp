@@ -5,10 +5,12 @@ import {importarProdutos} from '../estoque/cadastrar.produto.action'
 
 import{gravarVenda,EditarVenda} from './vendas.action'
 import Grid from '../../common/layout/grid'
-import Page from '../../common/layout/page'
+import Page from '../../common/layout/page' 
 import Row from '../../common/layout/row'
 import If from '../../common/operator/if'
 import {Input, Form,Select} from '../../common/layout/form'
+//import InputProdutos from '../../common/layout/autocompleteProdutos'
+import InputProdutos from '../../common/widget/autoComplete'
 import {optionProdutos,resetarCamposSelect,obterTamanhoGrid as OBT,controlarTamanhoTela as CTT} from '../../common/operator/funcoes'
 
 const INITIAL_ITEM = ()=>({produto:'',descProduto:'', qtd:'',valorUnitario:''})
@@ -28,6 +30,7 @@ class FormVendas extends React.Component{
 		this.atualizarItem = this.atualizarItem.bind(this)
 		this.state = this.preencherStatus()
 		this.cancelarEdicaoItem = this.cancelarEdicaoItem.bind(this)
+		this.preencherProduto = this.preencherProduto.bind(this)
 		CTT(this)
 	}
 	preencherStatus(){
@@ -104,8 +107,19 @@ class FormVendas extends React.Component{
 		}
 		this.setState({...this.state,state})
 	}
+	
+	preencherProduto(e){
+		const item = this.state.item
+		item.descProduto = e.target.textContent
+		item.produto = e.target.getAttribute('value')
+		
+		this.setState({...this.state, item})
+	}
 	componentDidMount(){
+		
 		this.props.importarProdutos()
+		
+
 	}
 	componentWillMount(){
 		this.somarValorTotal()
@@ -127,12 +141,12 @@ class FormVendas extends React.Component{
 		
 		state.item = INITIAL_ITEM()
 		this.setState( state)
-		resetarCamposSelect(this.state.campos)
+		resetarCamposSelect(this.state.campos || [])
 		}
 	}
 	finalizarVenda(){
 		const state = this.state;
-				this.props.EditarVenda(!this.props.editarVenda)
+		this.props.EditarVenda(!this.props.editarVenda)
 		if(this.validarItens(state)){
 		let venda =  {nomeCliente:state.nomeCliente,itens:state.itens,valorTotalPedido:this.somarValorTotal(),status:state.status}
 		if(state._id){
@@ -183,7 +197,11 @@ class FormVendas extends React.Component{
 					<Grid cols='12 8 6 4 '>
 						<Form cols='12'>
 							<Input cols='12'  id='nomeCliente' placeholder='Cliente' valor={this.state.nomeCliente} onChange={this.preencheCampos}/>
-							<Select cols='12'  id='produto' label='Produto'  valor={this.state.item.produto} onChange={this.preencheCampos} options={optionProdutos(this.props.cadastroProduto.produtos)} />
+							<InputProdutos text={this.state.item.descProduto} label='Produto' onClickItem={this.preencherProduto} pArrayList={this.props.cadastroProduto.produtos} field='descricaoCompleta' fieldValue='_id' minLength={2}/>
+							<Grid cols='12' className='bg-primary my-3 text-white'>
+								<h5 className='text-center '>Produto selecionado</h5>
+								<p className='text-center'>{this.state.item.descProduto === '' ? 'Nenhum':this.state.item.descProduto }</p>
+							</Grid>
 							<Input cols='12 4'  label='Qtd.'   valor={this.state.item.qtd} id='qtd'  onChange={this.preencheCampos}/>
 							<Input cols='12 4'  label='V. Uni' valor={this.state.item.valorUnitario} id='vlunitario' onChange={this.preencheCampos}/>
 							<Input cols='12 4'  label='V.Tot' valor={parseFloat(this.state.item.valorUnitario*this.state.item.qtd).toFixed(2)} id='vlTotal'/>
@@ -284,3 +302,5 @@ class FormVendas extends React.Component{
 const mapStateToProps = state =>({cadastroProduto: state.cadastroProduto,editarVenda: state.vendas.editarVenda})
 const mapDispatchToProps = dispatch => bindActionCreators({importarProdutos,gravarVenda,EditarVenda},dispatch)
 export default connect(mapStateToProps,mapDispatchToProps)(FormVendas)
+
+//<Select cols='12'  id='produto' label='Produto'  valor={this.state.item.produto} onChange={this.preencheCampos} options={optionProdutos(this.props.cadastroProduto.produtos)} />

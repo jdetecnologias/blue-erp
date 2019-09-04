@@ -14,7 +14,36 @@ min-height: 100vh;
 		font-size:0.9em;
 	}
 }
+.autoComplete  {
 
+}
+.autoComplete  fieldset{
+	padding: 0;
+    border: 1px solid #c8c8c8;
+    background-color: #ffffff;
+}
+
+.autoComplete ul {
+	padding:0 !important;
+	display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+	overflow-y: auto;
+	max-height:150px;
+
+}
+.autoComplete ul li{
+	padding:10px 0 10px 10px;
+	list-style-type:none;
+	cursor:pointer;
+}
+.autoComplete ul li:hover{
+background-color: rgba(170,170,170,0.5);
+}
 @media screen and (max-width: 575px){
 	#parent-menu{
 		font-size:1.3em;
