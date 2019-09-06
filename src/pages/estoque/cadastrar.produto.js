@@ -6,6 +6,7 @@ import {Input,Form, Select} from '../../common/layout/form'
 import Grid from '../../common/layout/grid'
 import Page from '../../common/layout/page'
 import Row from '../../common/layout/row'
+import AutoComplete from '../../common/widget/autoComplete'
 import {gravarProduto,importarProdutos} from './cadastrar.produto.action'
 import {inverterArray,resetarCamposSelect} from '../../common/operator/funcoes'
 
@@ -21,25 +22,25 @@ class CadastroProduto extends React.Component{
 		return  {container:{value:'',label:''},subcontainer:{value:'',label:''},descricao:{value:'',label:''}, cor:{value:'',label:''},campos:[]}
 	}
 	definirProduto(e){
-		const campo = e.target.getAttribute('id')
+		const campo = e.target.getAttribute('tipo') || e.target.getAttribute('id') 
 		let state = this.state
 		let elemento = e.target
 		switch(campo){
 			case "categoria":
-			 state.container.value = elemento.value
-			 state.container.label = elemento.options[elemento.selectedIndex].getAttribute('labelOpt')	
+			 state.container.value = elemento.getAttribute('value')
+			 state.container.label = elemento.textContent
 			break
 			case "subcategoria":
-			 state.subcontainer.value = elemento.value
-			 state.subcontainer.label = elemento.options[elemento.selectedIndex].getAttribute('labelOpt')
+			 state.subcontainer.value = elemento.getAttribute('value')
+			 state.subcontainer.label = elemento.textContent
 			break
 			case "descricao":
 			 state.descricao.value = elemento.value
 			 state.descricao.label = elemento.value
 			break
 			case "cor":
-			 state.cor.value = elemento.value
-			 state.cor.label = elemento.options[elemento.selectedIndex].getAttribute('labelOpt')
+			 state.cor.value = elemento.getAttribute('value')
+			 state.cor.label = elemento.textContent
 			break		
 		}
 		state.campos.push(elemento)
@@ -89,18 +90,29 @@ class CadastroProduto extends React.Component{
 				<Grid cols='12 10 8 6'>
 					<h3 className='text-center'>Cadastrar Produto</h3>
 					<Form cols='12'>
-					<Select 
-						cols='12 6' 
-						options={this.props.cadastro.containers} 
-						id='categoria' label='Categoria' 
-						onChange={this.definirProduto}
-					/>
-					<Select cols='12 6' 
-						options={this.props.cadastro.subcontainers} 
-						id='subcategoria' 
-						label='SubCategoria' 
-						onChange={this.definirProduto}
-					/>
+					
+					<AutoComplete
+					tipo='categoria'
+					cols='12 6' 
+					text={this.state.container.label} 
+					label='Categoria' 
+					onClickItem={this.definirProduto} 
+					pArrayList={this.props.cadastro.containers} 
+					field='label' 
+					fieldValue='value' 
+					minLength={1}/>
+					
+					<AutoComplete
+					tipo='subcategoria'
+					cols='12 6' 
+					text={this.state.subcontainer.label} 
+					label='Subcategoria' 
+					onClickItem={this.definirProduto} 
+					pArrayList={this.props.cadastro.subcontainers} 
+					field='label' 
+					fieldValue='value' 
+					minLength={1}/>
+					
 					<Input 
 						cols='12 6' 
 						placeholder='Descrição produto' 
@@ -109,7 +121,17 @@ class CadastroProduto extends React.Component{
 						onChange={this.definirProduto} 
 						valor={this.state.descricao.value}
 					/>
-					<Select cols='12 6' options={this.props.cadastro.cores} label='Cor' id='cor'onChange={this.definirProduto}/>
+					<AutoComplete
+					tipo='cor'
+					cols='12 6' 
+					text={this.state.cor.label} 
+					label='Cor' 
+					onClickItem={this.definirProduto} 
+					pArrayList={this.props.cadastro.cores} 
+					field='label' 
+					fieldValue='value' 
+					minLength={1}/>					
+
 					<Grid cols='12'>
 						<h4 className='text-center'>Código Produto</h4>
 						<p>{this.state.container.value}
@@ -159,3 +181,18 @@ class CadastroProduto extends React.Component{
 const mapStateToProps = state => ({cadastro: state.cadastroProduto})
 const  mapDispatchToProps = dispatch => bindActionCreators({gravarProduto,importarProdutos},dispatch)
 export default connect(mapStateToProps,mapDispatchToProps)(CadastroProduto)
+
+/*					<Select 
+						cols='12 6' 
+						options={this.props.cadastro.containers} 
+						id='categoria' label='Categoria' 
+						onChange={this.definirProduto}
+					/>
+					<Select cols='12 6' 
+						options={this.props.cadastro.subcontainers} 
+						id='subcategoria' 
+						label='SubCategoria' 
+						onChange={this.definirProduto}
+					/>
+					<Select cols='12 6' options={this.props.cadastro.cores} label='Cor' id='cor'onChange={this.definirProduto}/>					
+					*/

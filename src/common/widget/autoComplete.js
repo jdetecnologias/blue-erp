@@ -70,7 +70,7 @@ export default class AutoComplete extends React.Component{
 					<ul onClick={this.setClickedInside}>
 					{
 						this.state.sArrayList.map((it)=>( 
-							<li onClick={this.setProduto} value={it[this.props.fieldValue]}>{it[this.props.field]}</li>
+							<li tipo={this.props.tipo} onClick={this.setProduto} value={it[this.props.fieldValue]}>{it[this.props.field]}</li>
 							)
 						)		
 					}
