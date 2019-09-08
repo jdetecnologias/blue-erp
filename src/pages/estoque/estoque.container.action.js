@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {importarProdutos} from './cadastrar.produto.action'
 
-const BASE_URL = 'http://18.217.144.66:3003'
+const BASE_URL = 'https://azul-api.herokuapp.com'
 
 export  function importarEstoque(){
 	return (dispatch, getState)=>{
