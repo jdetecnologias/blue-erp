@@ -1,5 +1,7 @@
 import axios from 'axios'
-const BASE_URL = 'http://18.217.144.66:3003'
+import config from '../../config/config'
+
+const BASE_URL = config.base_url_api
 
 
 export  function gravarEstoque(estoque){

@@ -1,6 +1,8 @@
 import axios from 'axios'
 import {importarProdutos} from '../estoque/cadastrar.produto.action'
-const BASE_URL = 'https://azul-api.herokuapp.com'
+import config from '../../config/config'
+
+const BASE_URL = config.base_url_api
 
 
 export  function gravarVenda(Venda){

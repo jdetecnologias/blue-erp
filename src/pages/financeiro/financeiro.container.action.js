@@ -1,6 +1,7 @@
 import axios from 'axios'
-const BASE_URL = 'https://azul-api.herokuapp.com'
+import config from '../../config/config'
 
+const BASE_URL = config.base_url_api
 
 export  function importarFinanceiro(){
 
