@@ -14,7 +14,7 @@
     "classnames": "^2.2.6",
     "font-awesome": "^4.7.0",
     "ionicons": "3.0.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "primeicons": "^1.0.0",
     "primereact": "^3.1.9",
     "react": "^16.8.6",
